@@ -61,10 +61,13 @@ public class GestionEstudiantes implements IGestionEstudiantes{
         }
 
 
+        /**
+         * @return el mètodo devuelve el listado de alumnos con sus notas en su totalidad como un Hash_Map
+         */
         @Override
         public Map<String, Integer> obtenerEstudiantesYCalificaciones(){
 
-            throw new UnsupportedOperationException("Método todavía no implementado. ");
+            return this.padronAlumnos;
 
         }
 
@@ -122,12 +125,51 @@ public class GestionEstudiantes implements IGestionEstudiantes{
             }
         };
 
-        
+
+        /**
+         * 
+         * Entiendo que el objetivo del método, pudiendo tomar los valores de nuevasCalificaciones. Independientemente 
+         * de si existen. De existir previamente, entiendo, deberìa crearse un método donde solo se pasan las nuevas calificaciones. 
+         * 
+         * @param nuevosEstudiantes Lista de estudiantes nuevos a cargar. 
+         * @param nuevasCalificaciones Lista con las nuevas calificaciones para cada estudiante. 
+         * 
+         */
         @Override
         public void agregarEstudiantes(Set<String> nuevosEstudiantes, Map<String, Integer> nuevasCalificaciones){
             
-            throw new UnsupportedOperationException("Método todavía no implementado. ");
+            if(nuevosEstudiantes.size()!=nuevasCalificaciones.size()) {
 
+                System.out.println("Hay diferente cantidad de alumnos respecto de notas");
             
+            } else {
+
+                if (nuevosEstudiantes ==null || nuevasCalificaciones==null) {
+
+                    System.out.println("Los Hash maps y/o sets pasados so nulos. No hay carga...");
+
+                } else {
+
+                    for (String alumno : nuevosEstudiantes) {
+
+                        Integer nota = nuevasCalificaciones.get(alumno);
+
+                        padronAlumnos.put(alumno,nota);
+
+                        System.out.println(padronAlumnos.get(alumno));
+                    }
+                }
+            }
+        }
+
+        public void imprimirAlumnosNotas(){
+            
+            System.out.println("Alumno" + "\t:\t" + "Nota");
+            System.out.println("------------------------");
+            for (Map.Entry<String, Integer> entry : padronAlumnos.entrySet()) {
+                String nombre = entry.getKey();
+                Integer nota = entry.getValue();
+                System.out.println(nombre + "\t:\t" + nota);
+            }
         }
 }

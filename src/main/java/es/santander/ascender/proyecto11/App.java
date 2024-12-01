@@ -1,5 +1,7 @@
 package es.santander.ascender.proyecto11;
 
+import java.util.Map;
+
 public class App {
 
 
@@ -24,5 +26,12 @@ public class App {
 
         alumnado.agregarEstudiante("Ernesto", 10);
         alumnado.agregarEstudiante("Ernesto", 5);
+
+        alumnado.agregarEstudiante("Sofia", 92);
+        alumnado.agregarEstudiante("Miguel", 85);
+
+        alumnado.imprimirAlumnosNotas();
+
+        
     }
 }

@@ -1,6 +1,5 @@
 package es.santander.ascender.proyecto11;
 
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
