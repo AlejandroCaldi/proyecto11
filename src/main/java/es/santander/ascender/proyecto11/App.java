@@ -8,7 +8,7 @@ public class App {
         String contenido = "";
 
         try {
-            contenido = procesosArchivo.leerFile("/src/test/resources/tet.txt");
+            contenido = procesosArchivo.leerFile("/src/test/resources/test.txt");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -20,5 +20,9 @@ public class App {
             e.printStackTrace();
         }
 
+        GestionEstudiantes alumnado = new GestionEstudiantes();
+
+        alumnado.agregarEstudiante("Ernesto", 10);
+        alumnado.agregarEstudiante("Ernesto", 5);
     }
 }
