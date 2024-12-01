@@ -4,7 +4,6 @@ import java.util.Map;
 
 public class App {
 
-
     public static void main(String[] args) {
         FileProcesor procesosArchivo = new FileProcesor();
         String contenido = "";
@@ -32,6 +31,5 @@ public class App {
 
         alumnado.imprimirAlumnosNotas();
 
-        
     }
 }
