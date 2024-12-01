@@ -13,7 +13,7 @@ public class FileProcesor implements IFileProcesor {
      * Metodo para convertir un archivo a una variable String. El archivo no puede
      * ser binario.
      * 
-     * @filePath Archivo que se pretende leer.
+     * @param filePath Archivo que se pretende leer.
      * @return contenido de archivo no binario como String.
      * 
      */
@@ -39,7 +39,7 @@ public class FileProcesor implements IFileProcesor {
      * más, pero a los efectos del ejercicio
      * deberìa esar bien.
      * 
-     * @input el String al que se le quiere sacar las vocales.
+     * @param input el String al que se le quiere sacar las vocales.
      * @vocalesRegex la expresión regular que se desea aplicar al Sring original
      * @return una String sin vocales.
      */
@@ -62,8 +62,8 @@ public class FileProcesor implements IFileProcesor {
      * Método para escribir texto plano a archivo. No se limitan direcciones de disco para grabar, de lo contrario
      * el test contra la carpeta /tmp/ no es permitido. 
      * 
-     * @filePath es la direcciòn, en un String, donde deseamos grabar el fichero resultante. 
-     * @content El String que queremos grabar en fichero. 
+     * @param filePath es la direcciòn, en un String, donde deseamos grabar el fichero resultante. 
+     * @param cadenaCaracteres El String que queremos grabar en fichero. 
      */
     @Override
     public void escribirAFile(String filePath, String cadenaCaracteres) throws Exception {
