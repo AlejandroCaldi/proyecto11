@@ -162,6 +162,11 @@ public class GestionEstudiantes implements IGestionEstudiantes{
             }
         }
 
+        /**
+         * 
+         * Método Sui Generis para listar en patalla todo el Hash Map a los efectos de darle una visualización.
+         *  
+         */
         public void imprimirAlumnosNotas(){
             
             System.out.println("Alumno" + "\t:\t" + "Nota");
