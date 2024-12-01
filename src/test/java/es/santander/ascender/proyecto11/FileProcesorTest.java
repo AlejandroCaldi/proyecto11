@@ -52,6 +52,6 @@ public class FileProcesorTest {
 
         String result = procesor.eliminarVocales(input);
 
-        assertEquals(expected, result);
+        assertEquals(expected, result, result);
     }
 }
