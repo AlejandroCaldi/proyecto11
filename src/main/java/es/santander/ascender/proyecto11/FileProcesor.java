@@ -20,8 +20,10 @@ public class FileProcesor implements IFileProcesor {
     public String leerFile(String filePath) throws Exception {
 
         // Agregado para poder tomar más fácil el nombre del archivo. Asume que el
-        // usuario siempre va a tomar  archivos desde el subdirectorio del proyecto. Esta presunción puede ser
-        // inadecuada para el proyecto desplegado en producción, pero a los efectos de ejercicio me pareció
+        // usuario siempre va a tomar archivos desde el subdirectorio del proyecto. Esta
+        // presunción puede ser
+        // inadecuada para el proyecto desplegado en producción, pero a los efectos de
+        // ejercicio me pareció
         // adecuado.
         Path path = Paths.get(System.getProperty("user.dir"), filePath);
 
@@ -58,11 +60,13 @@ public class FileProcesor implements IFileProcesor {
     };
 
     /**
-     * Método para escribir texto plano a archivo. No se limitan direcciones de disco para grabar, de lo contrario
-     * el test contra la carpeta /tmp/ no es permitido. 
+     * Método para escribir texto plano a archivo. No se limitan direcciones de
+     * disco para grabar, de lo contrario
+     * el test contra la carpeta /tmp/ no es permitido.
      * 
-     * @param filePath es la direcciòn, en un String, donde deseamos grabar el fichero resultante. 
-     * @param cadenaCaracteres El String que queremos grabar en fichero. 
+     * @param filePath         es la direcciòn, en un String, donde deseamos grabar
+     *                         el fichero resultante.
+     * @param cadenaCaracteres El String que queremos grabar en fichero.
      */
     @Override
     public void escribirAFile(String filePath, String cadenaCaracteres) throws Exception {
@@ -75,6 +79,8 @@ public class FileProcesor implements IFileProcesor {
 
         Files.write(path, cadenaCaracteres.getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE);
 
-        System.out.println("Proceso de grabación de fichero " + filePath + " con el texto comenzando con '" + cadenaCaracteres.substring(0,15) + "'..");
+        System.out.println("Proceso de grabación de fichero " + filePath + " con el texto comenzando con '"
+                + cadenaCaracteres.substring(0, 15) + "'..");
 
-    };}
+    };
+}
