@@ -13,42 +13,44 @@ public class GestionEstudiantes implements IGestionEstudiantes{
         @Override
         public boolean agregarEstudiante(String nombre, int calificacion) {
     
-            new UnsupportedOperationException();
-            return false;
+            throw new UnsupportedOperationException("Método todavía no implementado. ");
+
         };
 
 
         @Override
         public Integer obtenerCalificacion(String nombre) {
 
-            new UnsupportedOperationException();
-            return 5;
+            throw new UnsupportedOperationException("Método todavía no implementado. ");
+
         }
 
         @Override
         public Map<String, Integer> obtenerEstudiantesYCalificaciones(){
 
-            throw new UnsupportedOperationException("Method not implemented yet");
+            throw new UnsupportedOperationException("Método todavía no implementado. ");
 
         }
 
         @Override
          public boolean existeEstudiante(String nombre){
 
-            new UnsupportedOperationException();
-            return false;
+            throw new UnsupportedOperationException("Método todavía no implementado. ");
+
          }
 
         @Override
         public boolean eliminarEstudiante(String nombre) {
 
-            return false;
+            throw new UnsupportedOperationException("Método todavía no implementado. ");
+
         };
 
         @Override
         public void agregarEstudiantes(Set<String> nuevosEstudiantes, Map<String, Integer> nuevasCalificaciones){
             
-            new UnsupportedOperationException();
+            throw new UnsupportedOperationException("Método todavía no implementado. ");
+
             
         }
 }
