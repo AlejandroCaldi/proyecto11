@@ -32,9 +32,6 @@ public class GestionEstudiantes implements IGestionEstudiantes {
             if (esNombre) {
 
                 padronAlumnos.put(nombre, calificacion);
-                System.out.println("Alumno Agregado: " + nombre);
-                System.out.println("Nota " + padronAlumnos.get(nombre));
-
                 return true;
             }
 
