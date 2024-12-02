@@ -1,10 +1,8 @@
 package es.santander.ascender.proyecto11;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -14,7 +12,7 @@ public class GestionEstudiantes implements IGestionEstudiantes {
     private final String REGEX_NOMBRES_LATINOS = "^[\\p{L} .'-]+$"; //Regex para filtrar detectar nombres no latinizados. 
 
     /**
-     * @param nombre
+     * @param nombre nombre del estidiante a agregar
      * @param calificacion int, se admite nulo en caso de que listar alumno sin una
      *                     nota por estar pendiente el exámen sea viable.
      * @nombreRegex String regex para chequear contra caracteres no admitibles en
@@ -144,7 +142,7 @@ public class GestionEstudiantes implements IGestionEstudiantes {
      * 
      * Entiendo que el objetivo del método, pudiendo tomar los valores de
      * nuevasCalificaciones. Independientemente
-     * de si existen. De existir previamente, entiendo, deberìa crearse un método
+     * de si existen. De existir previamente, entiendo, debería crearse un método
      * donde solo se pasan las nuevas calificaciones.
      * 
      * @param nuevosEstudiantes    Lista de estudiantes nuevos a cargar.
@@ -218,7 +216,7 @@ public class GestionEstudiantes implements IGestionEstudiantes {
         for (String nombre : nombresCalificados.keySet()) {
 
             if (!nombre.matches(REGEX_NOMBRES_LATINOS)) {
-                System.out.println("nombre: " + nombre);
+                
                 return false;
             }
 
@@ -231,7 +229,7 @@ public class GestionEstudiantes implements IGestionEstudiantes {
      * @param nombres Array de String con ombres a testear para detectar si cumple
      *                con el estandar de nombres en alfabeto latino
      *                o si fueron completamente latinizados.
-     * @return True si todos los nombres están correctamente latonizados. False si
+     * @return true si todos los nombres están correctamente latonizados. False si
      *         al menos un caso no lo está.
      */
     public boolean controlarNombreRegex(Set<String> nombres) {
@@ -249,7 +247,7 @@ public class GestionEstudiantes implements IGestionEstudiantes {
     }
 
     /**
-     * Controla que un listado tenga todas notas consistentes, >= 0 0 <= 100.  
+     * Controla que un listado tenga todas notas consistentes, >= 0 o <= 100.  
      * @param nota el listado de notas a evaluar. 
      * @return true si todas las notas son consistentes. false si una no lo es. 
      */
@@ -290,7 +288,7 @@ public class GestionEstudiantes implements IGestionEstudiantes {
      */
     public boolean controlListadoNombres(Set<String> nuevosEstudiantes, Map<String, Integer> nuevasCalificaciones) {
 
-        // Controlar si ambas listas de nombres son iguales contienen los mimsos nombres
+        // Controlar si ambas listas de nombres son iguales contienen los mismos nombres
         // y son iguales.
         Set<String> nombresCalificados = nuevasCalificaciones.keySet();
 

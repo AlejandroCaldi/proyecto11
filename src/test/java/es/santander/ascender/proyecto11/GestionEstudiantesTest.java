@@ -24,17 +24,21 @@ public class GestionEstudiantesTest {
         assertFalse(gestion.agregarEstudiante("Juan", 90)); // No se puede agregar el mismo estudiante dos veces
     }
 
+    // Testeo de nombres mal latiizados para un solo caso.
     @Test
     void testAgregarEstudianteMalNombre() {
         assertFalse(gestion.agregarEstudiante("Jua%n", 85));
     }
 
+    // Testeo de calificación inconsistente para un solo caso.
     @Test
     void testAgregarEstudianteMalNota() {
         assertFalse(gestion.agregarEstudiante("Juan", 215));
     }
+
+
     // Test agregado para chequear nombres contra letras esperables en la
-    // castellanizaciòn usual de nombres extranjeros. Estos
+    // castellanización usual de nombres extranjeros. Estos
     // permitidos. No se permiten caracteres raros tales como @|\.
     @Test
     void testAgregarEstudianteRegexCorrecto() {
@@ -85,6 +89,7 @@ public class GestionEstudiantesTest {
     }
 
 
+    // Test para probar tratamiento a listas de diferentes tamaños.
     @Test
     void testAgregarEstudiantesListasTrunctas() {
         Set<String> nuevosEstudiantes = new HashSet<>();
@@ -104,6 +109,7 @@ public class GestionEstudiantesTest {
 
     }
 
+    // Testeo de carga de notas y alumnos con nombres mal latinizados 
     @Test
     void testAgregarEstudiantesMalNombres() {
         Set<String> nuevosEstudiantes = new HashSet<>();
@@ -123,6 +129,7 @@ public class GestionEstudiantesTest {
 
     }
 
+    // Test para chequear si en la carga por listas hay notas inconsistentes
     @Test
     void testAgregarEstudiantesMalNotas() {
         Set<String> nuevosEstudiantes = new HashSet<>();
@@ -131,7 +138,7 @@ public class GestionEstudiantesTest {
 
         Map<String, Integer> nuevasCalificaciones = new HashMap<>();
         nuevasCalificaciones.put("Ana", 90);
-        nuevasCalificaciones.put("Luis", 120);
+        nuevasCalificaciones.put("Luis", -5);
         nuevasCalificaciones.put("Wenceslao", 35);
 
         gestion.agregarEstudiantes(nuevosEstudiantes, nuevasCalificaciones);
