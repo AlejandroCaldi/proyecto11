@@ -1,39 +1,51 @@
 package es.santander.ascender.proyecto11;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 public class GestionEstudiantes implements IGestionEstudiantes {
 
     Map<String, Integer> padronAlumnos = new HashMap<>();
+    private final String REGEX_NOMBRES_LATINOS = "^[\\p{L} .'-]+$"; //Regex para filtrar detectar nombres no latinizados. 
 
     /**
      * @param nombre
      * @param calificacion int, se admite nulo en caso de que listar alumno sin una
      *                     nota por estar pendiente el exámen sea viable.
+     * @nombreRegex String regex para chequear contra caracteres no admitibles en
+     *              una castellanización de un nombre
+     *              o bien contra el uso literal del mismo en castellano.
      * @return verdadero si pudo resgistrarlo, falso si ya està registrado.
      */
     @Override
     public boolean agregarEstudiante(String nombre, int calificacion) {
 
         boolean existe = this.existeEstudiante(nombre);
+        boolean esNombre = this.controlarNombreRegex(nombre);
+        boolean esNotaCorrecta = this.controlNota(calificacion);
 
-        if (!existe) {
+        if (!existe && esNotaCorrecta) {
 
-            padronAlumnos.put(nombre, calificacion);
-            System.out.println("Alumno Agregado: " + nombre);
-            System.out.println("Nota " + padronAlumnos.get(nombre));
+            if (esNombre) {
 
-            return true;
+                padronAlumnos.put(nombre, calificacion);
+                System.out.println("Alumno Agregado: " + nombre);
+                System.out.println("Nota " + padronAlumnos.get(nombre));
 
-        } else {
+                return true;
+            }
 
-            System.out.println("El Alumno " + nombre + " ya está cargado y su nota es " + padronAlumnos.get(nombre));
+            //El nombre no es válido en el lenguaje latino, incluso siendo extranjero
+            //O la nota es negativa o mayor que 100.
 
-            return false;
+        } 
 
-        }
+        return false;
     };
 
     /**
@@ -54,7 +66,7 @@ public class GestionEstudiantes implements IGestionEstudiantes {
 
         } else {
 
-            System.out.println("El alumno " + nombre + " no está registrado");
+            //El alumno " + nombre + " no está registrado.");
             return null;
         }
 
@@ -82,6 +94,7 @@ public class GestionEstudiantes implements IGestionEstudiantes {
         if (!padronAlumnos.containsKey(nombre)) {
 
             return false;
+
         } else {
 
             return true;
@@ -111,16 +124,16 @@ public class GestionEstudiantes implements IGestionEstudiantes {
             existe = this.existeEstudiante(nombre);
             if (!existe) {
 
-                System.out.println("Borrado existoso");
+                //"Borrado existoso"
                 return true;
             } else {
-                System.out.println("El Borrado no pudo realizarse.");
+                //"El Borrado no pudo realizarse."
                 return false;
             }
 
         } else {
 
-            System.out.println("El alumno no se encuentra registrado, operación no realizada.");
+           //El alumno no se encuentra registrado, operación no realizada.
 
             return false;
 
@@ -137,20 +150,29 @@ public class GestionEstudiantes implements IGestionEstudiantes {
      * @param nuevosEstudiantes    Lista de estudiantes nuevos a cargar.
      * @param nuevasCalificaciones Lista con las nuevas calificaciones para cada
      *                             estudiante.
+     * @sonNombresEstudiantes boolean establecido para determinar si los al menos un
+     *                        nombre no està latinizado.
+     *                        Si al menos uno no lo está entonces su valor es false.
+     * 
      * 
      */
     @Override
     public void agregarEstudiantes(Set<String> nuevosEstudiantes, Map<String, Integer> nuevasCalificaciones) {
 
-        if (nuevosEstudiantes.size() != nuevasCalificaciones.size()) {
+        boolean igualesNombres = this.controlListadoNombres(nuevosEstudiantes, nuevasCalificaciones);
+        boolean sonNombresEstudiantes = this.controlarNombreRegex(nuevosEstudiantes);
+        boolean sonNotasCorrectas = this.controlNota(nuevasCalificaciones);
 
-            System.out.println("Hay diferente cantidad de alumnos respecto de notas");
+        if (!sonNombresEstudiantes || !igualesNombres || !sonNotasCorrectas) {
+
+            // O los nombres no están latinizados o los nombres no coinciden completamente
+            // entre una lista y la otra, o al menos una nota no es consistente.
 
         } else {
 
-            if (nuevosEstudiantes == null || nuevasCalificaciones == null) {
+            if (nuevosEstudiantes.size() != nuevasCalificaciones.size()) {
 
-                System.out.println("Los Hash maps y/o sets pasados so nulos. No hay carga...");
+                // Hay diferente cantidad de alumnos respecto de notas                
 
             } else {
 
@@ -164,6 +186,122 @@ public class GestionEstudiantes implements IGestionEstudiantes {
                 }
             }
         }
+
+    }
+
+    /**
+     * @param nombre Nombre a testear para detectar si cumple con el estandar de
+     *               nombres en alfabeto latino
+     *               o si fueron completamente latinizados.
+     * @return true si el nombre está latinizado, false si no lo está.
+     */
+    public boolean controlarNombreRegex(String nombre) {
+
+
+        if (nombre.matches(REGEX_NOMBRES_LATINOS)) {
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param nombres Array de String con ombres a testear para detectar si cumple
+     *                con el estandar de nombres en alfabeto latino
+     *                o si fueron completamente latinizados.
+     * @return True si todos los nombres están correctamente latonizados. False si
+     *         al menos un caso no lo está.
+     */
+    public boolean controlarNombreRegex(Map<String, Integer> nombresCalificados) {
+
+        for (String nombre : nombresCalificados.keySet()) {
+
+            if (!nombre.matches(REGEX_NOMBRES_LATINOS)) {
+                System.out.println("nombre: " + nombre);
+                return false;
+            }
+
+        }
+
+        return true;
+    }
+
+    /**
+     * @param nombres Array de String con ombres a testear para detectar si cumple
+     *                con el estandar de nombres en alfabeto latino
+     *                o si fueron completamente latinizados.
+     * @return True si todos los nombres están correctamente latonizados. False si
+     *         al menos un caso no lo está.
+     */
+    public boolean controlarNombreRegex(Set<String> nombres) {
+
+        for (String nombre : nombres) {
+
+            if (!nombre.matches(REGEX_NOMBRES_LATINOS)) {
+
+                return false;
+            }
+
+        }
+
+        return true;
+    }
+
+    /**
+     * Controla que un listado tenga todas notas consistentes, >= 0 0 <= 100.  
+     * @param nota el listado de notas a evaluar. 
+     * @return true si todas las notas son consistentes. false si una no lo es. 
+     */
+    public boolean controlNota(Map<String, Integer> listaConNotas) {
+
+        Collection<Integer> notas = listaConNotas.values();
+        
+        if (Collections.min(notas)<0 || Collections.max(notas)>100) {
+
+            return false;
+        } else {
+
+            return true;
+        }
+    }
+
+    /**
+     * Control de consistencia de nota para todo un listado. No puede ser menor que 0 ni mayor que 100
+     * @param nota la nota a evaluar. 
+     * @return true si es consitente, false si no lo es. 
+     */
+    public boolean controlNota(int nota) {
+
+        if (nota>=0 && nota <= 100) {
+
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    /**
+     * Verifica que ambos listados contengan los mismos nombres. 
+     * @param nuevosEstudiantes lista de los nuevos estudiantes.
+     * @param nuevasCalificaciones lista de las calificaciones de los mismos estudiantes. 
+     * @return true si coinciden, false si no coinciden. 
+     */
+    public boolean controlListadoNombres(Set<String> nuevosEstudiantes, Map<String, Integer> nuevasCalificaciones) {
+
+        // Controlar si ambas listas de nombres son iguales contienen los mimsos nombres
+        // y son iguales.
+        Set<String> nombresCalificados = nuevasCalificaciones.keySet();
+
+        for (String calificado : nombresCalificados){
+
+            if(!nuevosEstudiantes.contains(calificado)) {
+
+                return false;
+            }
+        }
+        return true;
     }
 
     /**

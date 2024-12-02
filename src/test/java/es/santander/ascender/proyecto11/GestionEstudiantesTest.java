@@ -10,18 +10,59 @@ import java.util.Map;
 import java.util.Set;
 
 public class GestionEstudiantesTest {
-    
+
     private IGestionEstudiantes gestion;
-    
+
     @BeforeEach
     void setUp() {
         gestion = new GestionEstudiantes();
     }
-    
+
     @Test
     void testAgregarEstudiante() {
         assertTrue(gestion.agregarEstudiante("Juan", 85));
         assertFalse(gestion.agregarEstudiante("Juan", 90)); // No se puede agregar el mismo estudiante dos veces
+    }
+
+    @Test
+    void testAgregarEstudianteMalNombre() {
+        assertFalse(gestion.agregarEstudiante("Jua%n", 85));
+    }
+
+    @Test
+    void testAgregarEstudianteMalNota() {
+        assertFalse(gestion.agregarEstudiante("Juan", 215));
+    }
+    // Test agregado para chequear nombres contra letras esperables en la
+    // castellanizaciòn usual de nombres extranjeros. Estos
+    // permitidos. No se permiten caracteres raros tales como @|\.
+    @Test
+    void testAgregarEstudianteRegexCorrecto() {
+
+        String[] nombresCorrectos = { "John Doe", "Ángela Martín", "Renée O'Connor", "Jean-Luc Picard", "O'Conner",
+                "Mário", "A", "João", "Chloé",
+                "D'Artagnan", "Hélène", "Åsa", "Øyvind", "Ægir", "Çem", "Đorđe", "Šime", "Željko", "Þór", "Ðoković" };
+
+        for (int i = 0; i <= nombresCorrectos.length - 1; i++) {
+
+            assertTrue(gestion.agregarEstudiante(nombresCorrectos[i], 5));
+        }
+
+    }
+
+    // Test agegado para chequear nombres contra letras esperables en la
+    // castellanizaciòn usual de nombres extranjeros. Estos
+    // permitidos. No se permiten caracteres raros tales como @|\.
+    @Test
+    void testAgregarEstudianteRegexFalso() {
+
+        String[] nombresMal = { "123Juan", "Juan@email", "Jorge|pipa", "Ronaldo%porCienta", "Don?pregunton" };
+
+        for (int j = 0; j <= nombresMal.length - 1; j++) {
+
+            assertFalse(gestion.agregarEstudiante(nombresMal[j], 5));
+        }
+
     }
 
     @Test
@@ -38,9 +79,69 @@ public class GestionEstudiantesTest {
 
         assertTrue(gestion.existeEstudiante("Ana"));
         assertTrue(gestion.existeEstudiante("Luis"));
+
         assertEquals(90, gestion.obtenerCalificacion("Ana"));
         assertEquals(80, gestion.obtenerCalificacion("Luis"));
     }
+
+
+    @Test
+    void testAgregarEstudiantesListasTrunctas() {
+        Set<String> nuevosEstudiantes = new HashSet<>();
+        nuevosEstudiantes.add("Ana");
+        nuevosEstudiantes.add("Luis");
+
+        Map<String, Integer> nuevasCalificaciones = new HashMap<>();
+        nuevasCalificaciones.put("Ana", 90);
+        nuevasCalificaciones.put("Luis", 80);
+        nuevasCalificaciones.put("Wenceslao", 35);
+
+        gestion.agregarEstudiantes(nuevosEstudiantes, nuevasCalificaciones);
+
+        assertFalse(gestion.existeEstudiante("Ana"));
+        assertFalse(gestion.existeEstudiante("Luis"));
+        assertFalse(gestion.existeEstudiante("Wenceslao"));
+
+    }
+
+    @Test
+    void testAgregarEstudiantesMalNombres() {
+        Set<String> nuevosEstudiantes = new HashSet<>();
+        nuevosEstudiantes.add("An?");
+        nuevosEstudiantes.add("Luis");
+
+        Map<String, Integer> nuevasCalificaciones = new HashMap<>();
+        nuevasCalificaciones.put("An?", 90);
+        nuevasCalificaciones.put("Luis", 80);
+        nuevasCalificaciones.put("Wenceslao", 35);
+
+        gestion.agregarEstudiantes(nuevosEstudiantes, nuevasCalificaciones);
+
+        assertFalse(gestion.existeEstudiante("An?"));
+        assertFalse(gestion.existeEstudiante("Luis"));
+        assertFalse(gestion.existeEstudiante("Wenceslao"));
+
+    }
+
+    @Test
+    void testAgregarEstudiantesMalNotas() {
+        Set<String> nuevosEstudiantes = new HashSet<>();
+        nuevosEstudiantes.add("Ana");
+        nuevosEstudiantes.add("Luis");
+
+        Map<String, Integer> nuevasCalificaciones = new HashMap<>();
+        nuevasCalificaciones.put("Ana", 90);
+        nuevasCalificaciones.put("Luis", 120);
+        nuevasCalificaciones.put("Wenceslao", 35);
+
+        gestion.agregarEstudiantes(nuevosEstudiantes, nuevasCalificaciones);
+
+        assertFalse(gestion.existeEstudiante("Ana"));
+        assertFalse(gestion.existeEstudiante("Luis"));
+        assertFalse(gestion.existeEstudiante("Wenceslao"));
+
+    }
+
 
     @Test
     void testEliminarEstudiante() {
