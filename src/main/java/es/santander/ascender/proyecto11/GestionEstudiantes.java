@@ -201,7 +201,6 @@ public class GestionEstudiantes implements IGestionEstudiantes {
      */
     public boolean controlarNombreRegex(String nombre) {
 
-
         if (nombre.matches(REGEX_NOMBRES_LATINOS)) {
 
             return true;
