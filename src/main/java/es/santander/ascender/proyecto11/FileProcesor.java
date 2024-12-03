@@ -49,12 +49,10 @@ public class FileProcesor implements IFileProcesor {
 
         String vocalesRegex = "[aeiouAEIOUÁÉÍÓÚáéíóúüüÜ]";
 
-        String consonantes = "";
-
         // Decidì usar replaceAll para hacer un solo proceso pasandole una expresión
         // regular y evitar pases por loops de
         // array con todas las permutaciones posibles de vocales.
-        consonantes = input.replaceAll(vocalesRegex, "");
+        String consonantes = input.replaceAll(vocalesRegex, "");
 
         return consonantes;
     };
@@ -80,7 +78,7 @@ public class FileProcesor implements IFileProcesor {
         Files.write(path, cadenaCaracteres.getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE);
 
         System.out.println("Proceso de grabación de fichero " + filePath + " con el texto comenzando con '"
-                + cadenaCaracteres.substring(0, 15) + "'..");
+                + cadenaCaracteres.substring(0, 15) + "'...");
 
     };
 }
