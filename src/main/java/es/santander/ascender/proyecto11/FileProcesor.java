@@ -47,7 +47,7 @@ public class FileProcesor implements IFileProcesor {
     @Override
     public String eliminarVocales(String input) {
 
-        String vocalesRegex = "[aeiouAEIOUÁÉÍÓÚáéíóú]";
+        String vocalesRegex = "[aeiouAEIOUÁÉÍÓÚáéíóúüüÜ]";
 
         String consonantes = "";
 
