@@ -13,6 +13,14 @@ public class GestionEstudiantes implements IGestionEstudiantes {
     private int notaMaxima = 100; // Para el caso de que cabie el sistema de puntuación
     private int notaMinima = 0; // Para el caso de que cabie el sistema de puntuación
 
+        public GestionEstudiantes(Map<String, Integer> alumnosyNotas){
+        
+            padronAlumnos = alumnosyNotas;
+        }
+
+        public GestionEstudiantes() {
+        
+        }
     /**
      * @param nombre nombre del estidiante a agregar
      * @param calificacion int, se admite nulo en caso de que listar alumno sin una
