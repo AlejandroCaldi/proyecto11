@@ -10,6 +10,8 @@ public class GestionEstudiantes implements IGestionEstudiantes {
 
     Map<String, Integer> padronAlumnos = new HashMap<>();
     private final String REGEX_NOMBRES_LATINOS = "^[\\p{L} .'-]+$"; //Regex para filtrar detectar nombres no latinizados. 
+    private int notaMaxima = 100; // Para el caso de que cabie el sistema de puntuación
+    private int notaMinima = 0; // Para el caso de que cabie el sistema de puntuación
 
     /**
      * @param nombre nombre del estidiante a agregar
@@ -52,7 +54,7 @@ public class GestionEstudiantes implements IGestionEstudiantes {
     public Integer obtenerCalificacion(String nombre) {
 
         boolean existe = this.existeEstudiante(nombre);
-        Integer nota = 0;
+        Integer nota = notaMinima;
 
         if (existe) {
 
@@ -61,7 +63,7 @@ public class GestionEstudiantes implements IGestionEstudiantes {
 
         } else {
 
-            //El alumno " + nombre + " no está registrado.");
+            //El alumno no está registrado.
             return null;
         }
 
@@ -119,10 +121,10 @@ public class GestionEstudiantes implements IGestionEstudiantes {
             existe = this.existeEstudiante(nombre);
             if (!existe) {
 
-                //"Borrado existoso"
+                //Borrado existoso
                 return true;
             } else {
-                //"El Borrado no pudo realizarse."
+                //El Borrado no pudo realizarse.
                 return false;
             }
 
@@ -244,7 +246,7 @@ public class GestionEstudiantes implements IGestionEstudiantes {
     }
 
     /**
-     * Controla que un listado tenga todas notas consistentes, >= 0 o <= 100.  
+     * Controla que un listado tenga todas notas consistentes, >= notaMinima o <= noaMaxima.  
      * @param nota el listado de notas a evaluar. 
      * @return true si todas las notas son consistentes. false si una no lo es. 
      */
@@ -252,7 +254,7 @@ public class GestionEstudiantes implements IGestionEstudiantes {
 
         Collection<Integer> notas = listaConNotas.values();
         
-        if (Collections.min(notas)<0 || Collections.max(notas)>100) {
+        if (Collections.min(notas)<notaMinima || Collections.max(notas)>notaMaxima) {
 
             return false;
         } else {
@@ -268,13 +270,12 @@ public class GestionEstudiantes implements IGestionEstudiantes {
      */
     public boolean controlNota(int nota) {
 
-        if (nota>=0 && nota <= 100) {
+        if (nota>=notaMinima && nota <= notaMaxima) {
 
             return true;
         } else {
             return false;
         }
-
     }
 
     /**
@@ -315,4 +316,23 @@ public class GestionEstudiantes implements IGestionEstudiantes {
             System.out.println(nombre + "\t:\t" + nota);
         }
     }
+
+    // getters and setters:
+
+    public int getNotaMaxima() {
+        return notaMaxima;
+    }
+
+    public void setNotaMaxima(int notaMaxima) {
+        this.notaMaxima = notaMaxima;
+    }
+
+    public int getNotaMinima() {
+        return notaMinima;
+    }
+
+    public void setNotaMinima(int notaMinima) {
+        this.notaMinima = notaMinima;
+    }
+
 }
