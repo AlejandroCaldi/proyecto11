@@ -187,7 +187,6 @@ public class GestionEstudiantes implements IGestionEstudiantes {
 
                     padronAlumnos.put(alumno, nota);
 
-                    System.out.println(padronAlumnos.get(alumno));
                 }
             }
         }
