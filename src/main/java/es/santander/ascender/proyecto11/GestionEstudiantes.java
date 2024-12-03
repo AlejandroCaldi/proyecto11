@@ -8,7 +8,7 @@ import java.util.Set;
 
 public class GestionEstudiantes implements IGestionEstudiantes {
 
-    Map<String, Integer> padronAlumnos = new HashMap<>();
+    private Map<String, Integer> padronAlumnos = new HashMap<>();
     private final String REGEX_NOMBRES_LATINOS = "^[\\p{L} .'-]+$"; //Regex para filtrar detectar nombres no latinizados. 
     private int notaMaxima = 100; // Para el caso de que cabie el sistema de puntuación
     private int notaMinima = 0; // Para el caso de que cabie el sistema de puntuación
@@ -84,7 +84,8 @@ public class GestionEstudiantes implements IGestionEstudiantes {
     @Override
     public Map<String, Integer> obtenerEstudiantesYCalificaciones() {
 
-        return this.padronAlumnos;
+        Map<String, Integer> padronAlumnosRetornar = padronAlumnos;
+        return padronAlumnosRetornar;
 
     }
 
