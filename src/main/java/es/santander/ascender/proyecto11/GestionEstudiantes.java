@@ -18,6 +18,14 @@ public class GestionEstudiantes implements IGestionEstudiantes {
             padronAlumnos = alumnosyNotas;
         }
 
+        public GestionEstudiantes(Map<String, Integer> alumnosyNotas, int notaMininaArg, int notaMaximaArg){
+        
+            padronAlumnos = alumnosyNotas;
+            notaMaxima = notaMaximaArg;
+            notaMinima = notaMininaArg;
+        }
+        
+
         public GestionEstudiantes() {
         
         }
