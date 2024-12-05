@@ -29,5 +29,7 @@ public class App {
 
         alumnado.imprimirAlumnosNotas();
 
+        // GestionEstudiantes alumnadoBien = new GestionEstudiantes()
+
     }
 }

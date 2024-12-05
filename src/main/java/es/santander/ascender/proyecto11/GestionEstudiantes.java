@@ -9,28 +9,83 @@ import java.util.Set;
 public class GestionEstudiantes implements IGestionEstudiantes {
 
     private Map<String, Integer> padronAlumnos = new HashMap<>();
-    private final String REGEX_NOMBRES_LATINOS = "^[\\p{L} .'-]+$"; //Regex para filtrar detectar nombres no latinizados. 
-    private int notaMaxima = 100; // Para el caso de que cabie el sistema de puntuación
-    private int notaMinima = 0; // Para el caso de que cabie el sistema de puntuación
+    private final String REGEX_NOMBRES_LATINOS = "^[\\p{L} .'-]+$"; // Regex para filtrar detectar nombres no
+                                                                    // latinizados.
+    private int notaMaxima = 100; // Para el caso de que cabie el sistema de puntuación (configurable x setter o constructor)
+    private int notaMinima = 0; // Para el caso de que cabie el sistema de puntuación (configurable x setter o constructor)
 
-        public GestionEstudiantes(Map<String, Integer> alumnosyNotas){
+
+    
+    /**
+     * @param alumnosyNotas el listado de los alumnos con sus notas. 
+     * @throws Exception En caso de que haya nombres inconsistentes o notas inconsistentes. 
+     */
+    public GestionEstudiantes(Map<String, Integer> alumnosyNotas) throws Exception {
+
+        boolean chequeoNombres = this.controlarNombreRegex (alumnosyNotas);
+        boolean chequeoNotas = this.controlNota(alumnosyNotas);
         
-            padronAlumnos = alumnosyNotas;
+        if (chequeoNombres && chequeoNotas) {
+        padronAlumnos = alumnosyNotas;
+
+        } else {
+
+            throw new Exception("Los nombres estarìan mal generados o las notas estarían mal en relación 0 a 100.");
         }
 
-        public GestionEstudiantes(Map<String, Integer> alumnosyNotas, int notaMininaArg, int notaMaximaArg){
+    }
+
+    /**
+     * @param alumnosyNotas el hash con las notas de los estudiantes 
+     * @param notaMininaArg el valor de la nota mìnima
+     * @param notaMaximaArg el valor de la nota màxima
+     * @throws Exception en caso de que la nota mìnima sea mayor o igual a la nota máxima, las notas estén exdedidas o
+     *                   los nombnres están mal. 
+     */
+    public GestionEstudiantes(Map<String, Integer> alumnosyNotas, int notaMininaArg, int notaMaximaArg)
+            throws Exception {
+
+        boolean chequeoNombres = this.controlarNombreRegex (alumnosyNotas);
+        boolean chequeoNotas = this.controlNota(alumnosyNotas);
         
+
+        if (notaMaximaArg > notaMininaArg && chequeoNombres && chequeoNotas) {
             padronAlumnos = alumnosyNotas;
             notaMaxima = notaMaximaArg;
             notaMinima = notaMininaArg;
-        }
-        
 
-        public GestionEstudiantes() {
-        
+        } else {
+
+            throw new Exception("La nota mìnima no puede ser mayor o igual a la màxima. Las notas son inconsistentes o los nomnbres estàn mal");
         }
+    }
+
     /**
-     * @param nombre nombre del estidiante a agregar
+     * @param notaMininaArg el valor de la nota minima
+     * @param notaMaximaArg El valro de la nota máxima
+     * @throws Exception En caso de que la nota máxima sea menoro igual a la nota mínima
+     */
+    public GestionEstudiantes(int notaMininaArg, int notaMaximaArg)
+            throws Exception {
+
+        if (notaMaximaArg > notaMininaArg) {
+
+            notaMaxima = notaMaximaArg;
+            notaMinima = notaMininaArg;
+
+        } else {
+
+            throw new Exception("La nota mìnima no puede ser mayor o igual a la màxima.");
+        }
+    }
+
+    
+    public GestionEstudiantes() {
+
+    }
+
+    /**
+     * @param nombre       nombre del estidiante a agregar
      * @param calificacion int, se admite nulo en caso de que listar alumno sin una
      *                     nota por estar pendiente el exámen sea viable.
      * @nombreRegex String regex para chequear contra caracteres no admitibles en
@@ -53,10 +108,10 @@ public class GestionEstudiantes implements IGestionEstudiantes {
                 return true;
             }
 
-            //El nombre no es válido en el lenguaje latino, incluso siendo extranjero
-            //O la nota es negativa o mayor que 100.
+            // El nombre no es válido en el lenguaje latino, incluso siendo extranjero
+            // O la nota es negativa o mayor que 100.
 
-        } 
+        }
 
         return false;
     };
@@ -79,7 +134,7 @@ public class GestionEstudiantes implements IGestionEstudiantes {
 
         } else {
 
-            //El alumno no está registrado.
+            // El alumno no está registrado.
             return null;
         }
 
@@ -138,16 +193,16 @@ public class GestionEstudiantes implements IGestionEstudiantes {
             existe = this.existeEstudiante(nombre);
             if (!existe) {
 
-                //Borrado existoso
+                // Borrado existoso
                 return true;
             } else {
-                //El Borrado no pudo realizarse.
+                // El Borrado no pudo realizarse.
                 return false;
             }
 
         } else {
 
-           //El alumno no se encuentra registrado, operación no realizada.
+            // El alumno no se encuentra registrado, operación no realizada.
 
             return false;
 
@@ -186,7 +241,7 @@ public class GestionEstudiantes implements IGestionEstudiantes {
 
             if (nuevosEstudiantes.size() != nuevasCalificaciones.size()) {
 
-                // Hay diferente cantidad de alumnos respecto de notas                
+                // Hay diferente cantidad de alumnos respecto de notas
 
             } else {
 
@@ -230,7 +285,7 @@ public class GestionEstudiantes implements IGestionEstudiantes {
         for (String nombre : nombresCalificados.keySet()) {
 
             if (!nombre.matches(REGEX_NOMBRES_LATINOS)) {
-                
+
                 return false;
             }
 
@@ -261,15 +316,17 @@ public class GestionEstudiantes implements IGestionEstudiantes {
     }
 
     /**
-     * Controla que un listado tenga todas notas consistentes, >= notaMinima o <= noaMaxima.  
-     * @param nota el listado de notas a evaluar. 
-     * @return true si todas las notas son consistentes. false si una no lo es. 
+     * Controla que un listado tenga todas notas consistentes, >= notaMinima o <=
+     * noaMaxima.
+     * 
+     * @param nota el listado de notas a evaluar.
+     * @return true si todas las notas son consistentes. false si una no lo es.
      */
     public boolean controlNota(Map<String, Integer> listaConNotas) {
 
         Collection<Integer> notas = listaConNotas.values();
-        
-        if (Collections.min(notas)<notaMinima || Collections.max(notas)>notaMaxima) {
+
+        if (Collections.min(notas) < notaMinima || Collections.max(notas) > notaMaxima) {
 
             return false;
         } else {
@@ -279,13 +336,15 @@ public class GestionEstudiantes implements IGestionEstudiantes {
     }
 
     /**
-     * Control de consistencia de nota para todo un listado. No puede ser menor que 0 ni mayor que 100
-     * @param nota la nota a evaluar. 
-     * @return true si es consitente, false si no lo es. 
+     * Control de consistencia de nota para todo un listado. No puede ser menor que
+     * 0 ni mayor que 100
+     * 
+     * @param nota la nota a evaluar.
+     * @return true si es consitente, false si no lo es.
      */
     public boolean controlNota(int nota) {
 
-        if (nota>=notaMinima && nota <= notaMaxima) {
+        if (nota >= notaMinima && nota <= notaMaxima) {
 
             return true;
         } else {
@@ -294,10 +353,12 @@ public class GestionEstudiantes implements IGestionEstudiantes {
     }
 
     /**
-     * Verifica que ambos listados contengan los mismos nombres. 
-     * @param nuevosEstudiantes lista de los nuevos estudiantes.
-     * @param nuevasCalificaciones lista de las calificaciones de los mismos estudiantes. 
-     * @return true si coinciden, false si no coinciden. 
+     * Verifica que ambos listados contengan los mismos nombres.
+     * 
+     * @param nuevosEstudiantes    lista de los nuevos estudiantes.
+     * @param nuevasCalificaciones lista de las calificaciones de los mismos
+     *                             estudiantes.
+     * @return true si coinciden, false si no coinciden.
      */
     public boolean controlListadoNombres(Set<String> nuevosEstudiantes, Map<String, Integer> nuevasCalificaciones) {
 
@@ -305,9 +366,9 @@ public class GestionEstudiantes implements IGestionEstudiantes {
         // y son iguales.
         Set<String> nombresCalificados = nuevasCalificaciones.keySet();
 
-        for (String calificado : nombresCalificados){
+        for (String calificado : nombresCalificados) {
 
-            if(!nuevosEstudiantes.contains(calificado)) {
+            if (!nuevosEstudiantes.contains(calificado)) {
 
                 return false;
             }
